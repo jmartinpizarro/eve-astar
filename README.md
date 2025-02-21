@@ -19,6 +19,18 @@ Made in C++ for optimization, it has been implemented from zero to hero.
 
 Please, enjoy this as much as I have (probably not, it is going to be a nightmare) coding it.
 
+## The process
+
+At first, the search algorithm from point $A$ to $B$ would be `Dijkstra`. Why Dijkstra? Well, pure Dijkstra cannot check if you are travelling through the safest path, only the shortest one.
+
+This is an interesting approach for understanding how brute force algorithms work.
+
+After implementing Dijkstra, an heuristic function $h(x)$ that has not been decided yet will be implemented; with the corresponding A* algorithm.
+
+## Tests
+
+A battery of tests can be executed.
+
 
 
 
