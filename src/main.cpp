@@ -50,8 +50,9 @@ int main(int argc, char* argv[]) {
         Graph g;
         System* systems[] = {&s1,&s2,&s3,&s4,&s5};
         int size = 5;
+        
         for (int i = 0; i < size; i++){
-            g.nodes[i] = systems[i];
+            g.add_system(systems[i]);
         }
 
         for (int i = 0; i < size; i++){
@@ -60,7 +61,7 @@ int main(int argc, char* argv[]) {
                 cout << "\t - " << name << " with distance " << g.nodes[i]->get_adjacent_systems_distance()[system] << "\n";
             }
         }
-        
+
     } catch (const out_of_range& e) {
         cerr << "Error" << e.what() << "\n";
         return -1;
