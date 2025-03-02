@@ -5,7 +5,8 @@
 #include <string.h>
 #include <unordered_map>
 
-#include "main.h"
+#include "includes/system.h"
+#include "includes/state.h"
 
 int main(int argc, char* argv[]) {
     System s1 = {"Alpha", 1.0, {}, {}};
@@ -22,6 +23,9 @@ int main(int argc, char* argv[]) {
     for (const auto& [name, sys] : s1.adjacent_systems) { // cover all the .keys()
         std::cout << "- " << name << " with distance " << s1.distance_to_adj_system[sys] << "\n";
     }
+
+    State st1 = {&s1};
+    std::cout << "State " << st1.currentSystem->system_name << "\n";
 
     return 0;
 }

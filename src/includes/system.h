@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SYSTEM_H
+#define SYSTEM_H
 
 #include <string>
 #include <vector>
@@ -27,9 +27,5 @@ namespace std{
         }
     };
 }
-
-struct State{
-    System currentSystem;
-};
 
 #endif
