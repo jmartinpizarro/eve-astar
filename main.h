@@ -3,11 +3,15 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
+
+using namespace std;
 
 struct System{
-    char* system_name;
+    string system_name;
     float system_security;
-    std::vector<std::string> adjacent_systems;
+    std::vector<unordered_map<string, System>> adjacent_systems;
+    std::vector<unordered_map<System, int>> distance_to_adj_system;
 };
 
 #endif // MAIN_H
