@@ -1,0 +1,7 @@
+Jita
+Amarr
+Jita,1.0,Perimeter(6.7)
+Amarr,1.0,Villore(3.4)
+Perimeter,1.0,Jita(6.7),Tama(76.4),Villore(8.7)
+Tama,0.4,Perimeter(76.4)
+Villore,0.6,Perimeter(8.7),Amarr(3.4)

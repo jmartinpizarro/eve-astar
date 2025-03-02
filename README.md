@@ -29,7 +29,21 @@ After implementing Dijkstra, an heuristic function $h(x)$ that has not been deci
 
 ## Tests
 
-A battery of tests can be executed.
+A battery of tests can be executed. The `.txt` files follow this format:
+
+```
+Origin
+Destination
+System1,Concord_sec_status1,AdjSystem1(distance),AdjSystem2(distance), ... AdjSystemN(distance) 
+System2,Concord_sec_status2,AdjSystem1(distance),AdjSystem2(distance), ... AdjSystemN(distance)
+
+...
+
+SystemN,Concord_sec_status2,AdjSystem1(distance),AdjSystem2(distance), ... AdjSystemN(distance)
+```
+
+For example, here is a simplified version of one test:
+![A simplified test of the EVE PathFinding Problem](test.png)
 
 
 
