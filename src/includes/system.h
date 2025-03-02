@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <stdexcept>
 
 using namespace std;
 
@@ -18,7 +19,9 @@ class System {
     public:
         // constructor
         System(string name, float security)
-        : system_name(name), system_security(security) {}
+        : system_name(name) {
+            set_security(security);
+        }
 
         // for compairing other systems
         bool operator==(const System& other) const {
@@ -50,7 +53,7 @@ class System {
         // for controlling CONCORD Security values
         void set_security(double sec){
             if (sec > 1.0 || sec < -1.0){
-                cerr << "Security must be a float number: -1.0 <= security <= 1.0";
+                throw out_of_range("Security status must be an float -1.0 < sec < 1.0");
             } else {
                 system_security = sec;
             }
