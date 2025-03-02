@@ -14,4 +14,8 @@ struct System{
     std::vector<unordered_map<System, int>> distance_to_adj_system;
 };
 
+struct State{
+    System currentSystem;
+};
+
 #endif // MAIN_H
