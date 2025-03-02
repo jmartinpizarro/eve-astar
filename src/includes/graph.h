@@ -1,19 +1,19 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "system.h"
+#include <unordered_map>
+#include <string>
 
-/*
-* TODO: migrate to a class, create methods for inserting nodes
-*/
+#include "system.h"
 
 class Graph{
     public:
         int n_elements = 0;
-        System* nodes[];
+        unordered_map<string, System*> nodes;
+
 
         int add_system(System* system){
-            nodes[n_elements] = system;
+            nodes[system->get_name()] = system;
             n_elements++;
             return 0;
         }
