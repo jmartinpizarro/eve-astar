@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-g -Wall
+CFLAGS=-g -Wall -std=c++17
 OBJS=main.o
 TARGET=main
 ROUTE=src/
