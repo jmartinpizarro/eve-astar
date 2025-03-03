@@ -12,6 +12,12 @@
 #include "includes/graph.h"
 
 int main(int argc, char* argv[]) {
+    if (argc != 2){
+        cerr << "Error: you have not passed the fileRoute parameter";
+    }
+
+    read_file(argv[1]);
+
     try{
 
         System s1 = {"Jita", 1.0};
