@@ -11,13 +11,17 @@
 #include "includes/preprocessor.h"
 #include "includes/graph.h"
 
+string origin;
+string destination;
+
 int main(int argc, char* argv[]) {
     if (argc != 2){
-        cerr << "Error: you have not passed the fileRoute parameter\n";
-        return -1;
+        throw invalid_argument("Error: you have not passed the fileRoute parameter");
     }
 
-    read_file(argv[1]);
+    read_file(argv[1], &origin, &destination);
+
+    cout << origin << " - " << destination << endl;
 
     try{
 

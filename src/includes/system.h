@@ -28,6 +28,11 @@ class System {
             return system_name == other.system_name;
         }
 
+        int set_name(string name){
+            system_name = name;
+            return 0;
+        }
+        
         string get_name() const {
             return system_name;
         }
