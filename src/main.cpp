@@ -13,7 +13,8 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 2){
-        cerr << "Error: you have not passed the fileRoute parameter";
+        cerr << "Error: you have not passed the fileRoute parameter\n";
+        return -1;
     }
 
     read_file(argv[1]);
