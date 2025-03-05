@@ -6,17 +6,36 @@
 
 #include "system.h"
 
-class Graph{
+class Graph {
+    private:
+        unordered_map<string, System*> systems;
+    
     public:
-        int n_elements = 0;
-        unordered_map<string, System*> nodes;
-
-
-        int add_system(System* system){
-            nodes[system->get_name()] = system;
-            n_elements++;
-            return 0;
+        System* get_or_create_system(const string& name, double security = 0.0) {
+            if (systems.find(name) == systems.end()) {
+                systems[name] = new System(name, security);
+            }
+            return systems[name];
         }
-};
+    
+        void add_connection(const string& from, const string& to, double distance) {
+            System* system1 = get_or_create_system(from);
+            System* system2 = get_or_create_system(to);
+            
+            system1->add_adjacent_system(to, system2);
+            system1->add_adjacent_system_distance(system2, distance);
+        }
+
+        void print_graph(){
+            for (const auto& [name, system] : systems){
+                cout << "System " << name << " is connected to:\n";
+                for (const auto& [adj_name, adj_system] : system->get_adjacent_systems()) {
+                    cout << "\t - " << adj_name << " with distance " 
+                        << system->get_adjacent_systems_distance()[adj_system] << "\n";
+                }
+            }
+        }
+    };
+    
 
 #endif

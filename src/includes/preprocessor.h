@@ -15,29 +15,30 @@
 
 using namespace std;
 
-int process_line(Graph* g, string* content, int* counter){
+int process_line(Graph* g, string* content, int* counter) {
     string word1, word2, word3;
-    System sys = {"", 0.0};
     stringstream s(*content);
     string prev;
+    System* sys = nullptr;
+
     while (getline(s, word1, ',')) {
-        if (*counter == 0){
-            sys.set_name(word1);
+        if (*counter == 0) {
+            sys = g->get_or_create_system(word1);
         }
-        else if (*counter == 1){
+        else if (*counter == 1) {
             double concord_security = stod(word1);
-            sys.set_security(concord_security);
+            sys->set_security(concord_security);
         }
         else {
             stringstream ss(word1);
-            while (getline(ss, word2, '(')){ // obtain the system distance, there is still ')' as last character
+            while (getline(ss, word2, '(')) { 
                 stringstream ss3(word2);
-                while (getline(ss3, word3, ')')){
-                    if (prev == ""){
+                while (getline(ss3, word3, ')')) {
+                    if (prev.empty()) {
                         prev = word3;
                     } else {
-                        string distance = word3;
-                        cout << prev << "---" << distance << endl;
+                        double distance = stod(word3);
+                        g->add_connection(sys->get_name(), prev, distance);
                         prev.clear();
                     }
                 }
@@ -47,6 +48,7 @@ int process_line(Graph* g, string* content, int* counter){
     }
     return 0;
 }
+
 
 Graph read_file(string fileRoute, string* origin, string* destination){
 
