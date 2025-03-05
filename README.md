@@ -23,6 +23,7 @@ Please, enjoy this as much as I have (probably not, it is going to be a nightmar
 ## The process
 
 $A^*$ is a `Best-First` algorithm that uses an heuristic $h(x)$:
+
 $$h(x) = f(x) + g(x)$$
 
 where
