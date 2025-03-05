@@ -69,8 +69,12 @@ Graph read_file(string fileRoute, string* origin, string* destination){
     int c = 0;
 
     while (getline(file, content)){ // obtain the line
-        process_line(&g, &content, &c); // process the line
-        c = 0;
+        try{
+            process_line(&g, &content, &c); // process the line
+            c = 0;
+        } catch (const exception& e) {
+            cerr << "Error " << e.what() << endl;
+        }
     }
     file.close();
     return g;
