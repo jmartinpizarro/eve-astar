@@ -28,6 +28,7 @@ $$h(x) = f(x) + g(x)$$
 where
 
 $f(x)$ is `Dijkstra Algorithm`. Why Dijkstra? Because is an excellent brute force algorithm. 
+
 $g(x)$ is a random heuristic that we might think it may work. In this case, as we want to travel through the **safest path**, we want to take the node that `maximizes` the highest CONCORD security between its adjacent systems.
 
 ## Tests
