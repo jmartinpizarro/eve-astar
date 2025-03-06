@@ -3,17 +3,20 @@
 
 #include <unordered_map>
 #include <string>
+#include <limits>
 
 #include "system.h"
 
 class Graph {
     private:
         unordered_map<string, System*> systems;
+        int n_systems;
     
     public:
         System* get_or_create_system(const string& name, double security = 0.0) {
             if (systems.find(name) == systems.end()) {
                 systems[name] = new System(name, security);
+                n_systems++;
             }
             return systems[name];
         }
@@ -34,6 +37,63 @@ class Graph {
                         << system->get_adjacent_systems_distance()[adj_system] << "\n";
                 }
             }
+        }
+
+        System* closest_to_origin(unordered_map<System*, int>visited, unordered_map<System*, double>distances) {
+            /* This function returns the closest node to the origin from all the
+            nodes that have not been visited yet*/
+
+            double min = numeric_limits<int>::max();
+            System* sys = nullptr;
+
+            for (const auto& [name, system]: systems) {
+                if (visited[system] == 0 && distances[system] <= min){
+                    min = distances[system];
+                    sys = system;
+                }
+            }
+
+            return sys;
+        }
+
+        int dijkstra(System* origin){
+            /* Dijkstra Algorithm. Calculates the shortest path to every possible node*/
+
+            // if a system has been visited or not
+            unordered_map<System*, int> visited;
+            for (const auto& [name, system] : systems) {
+                visited[system] = 0;
+            }
+            // the previous node in order to conform the path
+            unordered_map<System*, System*> previous;
+            for (const auto& [name, system] : systems) {
+                previous[system] = NULL;
+            }
+
+            // the accumulated distance from the origin to that point
+            unordered_map<System*, double> distances;
+            for (const auto& [name, system] : systems ) {
+                distances[system] = numeric_limits<int>::max(); // all nodes are unrecheable
+            }
+
+            distances[origin] = 0;
+
+            for (int n = 0; n < n_systems; n++){ // Dijkstra is going to take 1 iteration per node
+
+                System* u = closest_to_origin(visited, distances); // take the best option (min cost)
+                visited[u] = 1;
+
+                for (const auto& [name, system] : u->get_adjacent_systems()){ // for all adjacent systems (name, System*)
+                    double w = system->get_adjacent_system_distance(system);
+
+                    if (visited[system] == 0 && (distances[system] > (distances[u] + w))){ // this path is shorter
+                        distances[system] = distances[u] + w;
+                        previous[system] = u; 
+                    }
+                }
+            }
+
+            return 1;
         }
     };
     

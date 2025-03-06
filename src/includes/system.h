@@ -45,6 +45,10 @@ class System {
             return distance_to_adj_system;
         }
 
+        double get_adjacent_system_distance(System* sys) {
+            return distance_to_adj_system[sys];
+        }
+
         int add_adjacent_system(string systemName, System* system) {
             adjacent_systems[systemName] = system;
             return 0;
