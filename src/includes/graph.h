@@ -13,6 +13,10 @@ class Graph {
         int n_systems;
     
     public:
+        System* get_system(const string& name){
+            return systems[name];
+        }
+
         System* get_or_create_system(const string& name, double security = 0.0) {
             if (systems.find(name) == systems.end()) {
                 systems[name] = new System(name, security);
