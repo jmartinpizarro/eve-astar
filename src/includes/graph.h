@@ -95,6 +95,36 @@ class Graph {
 
             return 1;
         }
+
+        void d_printSolution(unordered_map<System*, System*> previous, unordered_map<System*, double>distances, System* origin){
+            // should be used only for debug
+            printf("Minimum path for %s", origin->get_name().c_str());
+
+            for (const auto& [name, system] : systems){
+                if (distances[system] == numeric_limits<int>::max()){
+                    printf("\t No path possible from system %s", system->get_name().c_str());
+                } else {
+                    vector<System*> minimum_path = {};
+                    System* prev = previous[system];
+
+                    while (prev != nullptr){
+                        minimum_path.push_back(prev); // destiny -> ... -> origin
+                        prev = previous[prev];
+                    }
+
+                    // inverse the order
+                    reverse(minimum_path.begin(), minimum_path.end());
+
+                    // print the sol
+                    printf("\tPath: ");
+                    for (size_t i = 0; i < minimum_path.size(); ++i) {
+                        printf("%s", minimum_path[i]->get_name().c_str());
+                        if (i < minimum_path.size() - 1) printf(" -> ");
+                    }
+                    printf("\n");
+                }
+            }
+        }
     };
     
 
