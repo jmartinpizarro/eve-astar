@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
         g.print_graph();
         System* origin_S = nullptr;
         System* destination_S = nullptr;
-
         get_origin_destination_systems(&g, origin_S, destination_S);
         g.dijkstra(origin_S);            
     } catch (const out_of_range& e) {

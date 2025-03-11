@@ -17,6 +17,10 @@ class Graph {
             return systems[name];
         }
 
+        int get_n_systems(){
+            return n_systems;
+        }
+
         System* get_or_create_system(const string& name, double security = 0.0) {
             if (systems.find(name) == systems.end()) {
                 systems[name] = new System(name, security);
@@ -85,11 +89,13 @@ class Graph {
             for (int n = 0; n < n_systems; n++){ // Dijkstra is going to take 1 iteration per node
 
                 System* u = closest_to_origin(visited, distances); // take the best option (min cost)
+                if (u == nullptr) {
+                    break; // no more nodes to study
+                }
                 visited[u] = 1;
 
                 for (const auto& [name, system] : u->get_adjacent_systems()){ // for all adjacent systems (name, System*)
-                    double w = system->get_adjacent_system_distance(system);
-
+                    double w = u->get_adjacent_system_distance(system);
                     if (visited[system] == 0 && (distances[system] > (distances[u] + w))){ // this path is shorter
                         distances[system] = distances[u] + w;
                         previous[system] = u; 
@@ -97,16 +103,18 @@ class Graph {
                 }
             }
 
+            d_printSolution(previous, distances, origin);
+
             return 1;
         }
 
         void d_printSolution(unordered_map<System*, System*> previous, unordered_map<System*, double>distances, System* origin){
             // should be used only for debug
-            printf("Minimum path for %s", origin->get_name().c_str());
+            cout << "Minimum path for " << origin->get_name() << endl;
 
             for (const auto& [name, system] : systems){
                 if (distances[system] == numeric_limits<int>::max()){
-                    printf("\t No path possible from system %s", system->get_name().c_str());
+                    cout << "No possible path for the system" << system->get_name();
                 } else {
                     vector<System*> minimum_path = {};
                     System* prev = previous[system];
@@ -116,14 +124,11 @@ class Graph {
                         prev = previous[prev];
                     }
 
-                    // inverse the order
-                    reverse(minimum_path.begin(), minimum_path.end());
-
                     // print the sol
-                    printf("\tPath: ");
+                    cout << "\t" << "Path: ";
                     for (size_t i = 0; i < minimum_path.size(); ++i) {
-                        printf("%s", minimum_path[i]->get_name().c_str());
-                        if (i < minimum_path.size() - 1) printf(" -> ");
+                        cout << minimum_path[i]->get_name();
+                        if (i < minimum_path.size() - 1) cout << "->";
                     }
                     printf("\n");
                 }
