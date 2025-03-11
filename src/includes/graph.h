@@ -108,32 +108,34 @@ class Graph {
             return 1;
         }
 
-        void d_printSolution(unordered_map<System*, System*> previous, unordered_map<System*, double>distances, System* origin){
-            // should be used only for debug
-            cout << "Minimum path for " << origin->get_name() << endl;
+        void d_printSolution(unordered_map<System*, System*> previous, 
+                            unordered_map<System*, double> distances, 
+                            System* origin) {
 
-            for (const auto& [name, system] : systems){
-                if (distances[system] == numeric_limits<int>::max()){
-                    cout << "No possible path for the system" << system->get_name();
+            cout << "Minimum path from system: " << origin->get_name() << endl;
+
+            for (const auto& [name, system] : systems) {
+                if (distances[system] == numeric_limits<double>::max()) {
+                    cout << "No possible path to system " << system->get_name() << endl;
                 } else {
-                    vector<System*> minimum_path = {};
-                    System* prev = previous[system];
+                vector<System*> minimum_path;
+                System* prev = system;
 
-                    while (prev != nullptr){
-                        minimum_path.push_back(prev); // destiny -> ... -> origin
-                        prev = previous[prev];
-                    }
-
-                    // print the sol
-                    cout << "\t" << "Path: ";
-                    for (size_t i = 0; i < minimum_path.size(); ++i) {
-                        cout << minimum_path[i]->get_name();
-                        if (i < minimum_path.size() - 1) cout << "->";
-                    }
-                    printf("\n");
+                while (prev != nullptr) {
+                    minimum_path.push_back(prev);
+                    prev = previous[prev];
+                }
+                
+                cout << "\tPath: ";
+                for (size_t i = minimum_path.size(); i > 0; --i) {
+                    cout << minimum_path[i - 1]->get_name();
+                    if (i > 1) cout << " -> ";
+                }
+                cout << " (Total cost: " << distances[system] << ")" << endl;
                 }
             }
-        }
+            }
+
     };
     
 
