@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     cout << origin << " - " << destination << endl;
 
     try{
-        g.print_graph();
+        //g.print_graph();
         System* origin_S = nullptr;
         System* destination_S = nullptr;
         get_origin_destination_systems(&g, origin_S, destination_S);
