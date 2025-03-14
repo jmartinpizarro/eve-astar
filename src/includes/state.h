@@ -3,8 +3,19 @@
 
 #include "system.h"
 
-struct State{
-    System* currentSystem;
+class State{
+    public:
+        System* currentSystem;
 };
+
+// hash for each state
+namespace std{
+    template <>
+    struct hash<State>{
+        size_t operator()(const State& s) const {
+            return hash<string>()(s.currentSystem->get_name());
+        }
+    };
+}
 
 #endif
