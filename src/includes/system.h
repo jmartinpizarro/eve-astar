@@ -37,6 +37,10 @@ class System {
             return system_name;
         }
 
+        double get_security() const {
+            return system_security;
+        }
+
         unordered_map<string, System*> get_adjacent_systems() const {
             return adjacent_systems;
         }

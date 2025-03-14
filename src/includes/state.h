@@ -16,6 +16,26 @@ class State{
             }
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
+
+        System* max_sec_heuristic(System* node){
+            // HEURISTIC g(x) where it is selected the system with the maximum security
+            if (node->get_name() ==  destination){
+                return 0;
+            }
+            vector<System*>adjacents;
+            for (const auto& [name, system] : node->get_adjacent_systems()){
+                adjacents.push_back(system);
+            }
+            double max = numeric_limits<double>::min();
+            System* curr;
+            for (int i = 0; i < adjacents.size(); i++){
+                if (adjacents[i]->get_security() > max) {
+                    max = adjacents[i]->get_security();
+                    curr = adjacents[i];
+                }
+            }
+            return curr;
+        }
 };
 
 // hash for each state
