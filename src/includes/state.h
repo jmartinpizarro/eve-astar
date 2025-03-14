@@ -17,9 +17,9 @@ class State{
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
 
-        System* max_sec_heuristic(System* node){
+        System* max_sec_heuristic(System* node, System* destination){
             // HEURISTIC g(x) where it is selected the system with the maximum security
-            if (node->get_name() ==  destination){
+            if (node->get_name() ==  destination->get_name()){
                 return 0;
             }
             vector<System*>adjacents;
