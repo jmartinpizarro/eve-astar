@@ -133,6 +133,7 @@ public:
             if (i > 1)
                 cout << " -> ";
         }
+        cout << " with a total jumps of: " << minimum_path.size() << endl;
         return 1;
     }
 
@@ -201,7 +202,6 @@ public:
                 }
 
                 double total_local_jumps = minimum_local_path.size();
-                cout << total_local_jumps;
 
                 if (total_local_jumps <= total_jumps)
                 {

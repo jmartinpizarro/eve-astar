@@ -14,10 +14,10 @@
 string origin;
 string destination;
 
-void get_origin_destination_systems(Graph* g, System*& origin_S, System*& destination_S) { 
+void get_origin_destination_systems(Graph* g, State*& origin_S, State*& destination_S) {
     // Type*& var permite modificar punteros fuera de la función
-    origin_S = g->get_system(origin);
-    destination_S = g->get_system(destination);
+    origin_S->currentSystem = g->get_system(origin);
+    destination_S->currentSystem = g->get_system(destination);
 }
 
 int main(int argc, char* argv[]) {
@@ -31,15 +31,17 @@ int main(int argc, char* argv[]) {
 
     try{
         //g.print_graph();
-        System* origin_S = nullptr;
-        System* destination_S = nullptr;
+        State* origin_S = new State();
+        State* destination_S = new State();
         get_origin_destination_systems(&g, origin_S, destination_S);
-        g.dijkstra(origin_S);            
+        g.dijkstra(origin_S->currentSystem);     
+        
+        delete origin_S;
+        delete destination_S;
     } catch (const out_of_range& e) {
         cerr << "Error" << e.what() << "\n";
         return -1;
     }
-
     return 0;
 }
 
