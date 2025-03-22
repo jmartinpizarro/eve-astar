@@ -10,6 +10,7 @@
 #include "includes/state.h"
 #include "includes/preprocessor.h"
 #include "includes/graph.h"
+#include "includes/a_star.h"
 
 string origin;
 string destination;
@@ -36,11 +37,7 @@ int main(int argc, char* argv[]) {
         get_origin_destination_systems(&g, origin_S, destination_S);
         g.dijkstra(origin_S->currentSystem);     
         
-        vector<State> output = origin_S->max_sec_heuristic(origin_S->currentSystem, destination_S->currentSystem);
-
-        for (int i = 0; i < output.size(); i++){
-            cout << output[i].currentSystem->get_name()<< " ";
-        }
+        a_star(g, origin_S, destination_S);
 
         delete origin_S;
         delete destination_S;

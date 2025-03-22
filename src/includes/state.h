@@ -19,9 +19,9 @@ class State{
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
 
-        vector<State>max_sec_heuristic(System* node, System* destination){
+        vector<State*>max_sec_heuristic(System* node, System* destination){
             // HEURISTIC g(x) where it is selected the system with the maximum security
-            vector<State> priority_states_queue = {};
+            vector<State*> priority_states_queue = {};
             if (node->get_name() ==  destination->get_name()){
                 return {}; // we are at the destination, h(x) = 0
             }
@@ -35,8 +35,8 @@ class State{
                 if (adjacents[i]->get_security() > max) {
                     max = adjacents[i]->get_security();
                     curr = adjacents[i];
-                    State new_s;
-                    new_s.currentSystem = curr;
+                    State* new_s = new State();
+                    new_s->currentSystem = curr;
                     priority_states_queue.insert(priority_states_queue.begin(), new_s);
                 }
             }
