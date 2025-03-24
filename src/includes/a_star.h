@@ -53,10 +53,10 @@ vector<System*> a_star(Graph g, State* origin, State* destination){
     
     while (open_list.size() > 0){
         State* s_system = open_list.front();
+        cout << s_system->currentSystem->get_name() << endl;
         open_list.pop_front();
 
         if (s_system->currentSystem == destination->currentSystem){
-            cout << "here" << endl;
             return {};
         }
         
@@ -66,7 +66,7 @@ vector<System*> a_star(Graph g, State* origin, State* destination){
         
         closed_systems.insert(s_system->currentSystem);
         
-        vector<State*> heuristics_results = s_system->max_sec_heuristic(g, origin->currentSystem, destination->currentSystem);
+        vector<State*> heuristics_results = s_system->max_sec_heuristic(g, s_system->currentSystem, destination->currentSystem);
         for (int i = heuristics_results.size() - 1; i >= 0; i--){
             // if not processed, add it to the open_list
             if (closed_systems.find(heuristics_results[i]->currentSystem) == closed_systems.end()){

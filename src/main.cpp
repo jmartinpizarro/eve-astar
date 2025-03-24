@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
         State* origin_S = new State();
         State* destination_S = new State();
         get_origin_destination_systems(&g, origin_S, destination_S);
-        g.dijkstra(origin_S->currentSystem, destination_S->currentSystem);     
         
         a_star(g, origin_S, destination_S);
 
