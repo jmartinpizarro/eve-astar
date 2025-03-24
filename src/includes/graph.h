@@ -76,10 +76,10 @@ public:
         return sys;
     }
 
-    int dijkstra(System *origin)
+    int dijkstra(System *origin, System *destination)
     {
-        /* Dijkstra Algorithm. Calculates the shortest path to every possible node*/
-
+        /* Modified Dijkstra Algorithm. Calculates the shortest path between origin and destination */
+    
         // if a system has been visited or not
         unordered_map<System *, int> visited;
         for (const auto &[name, system] : systems)
@@ -92,26 +92,38 @@ public:
         {
             previous[system] = NULL;
         }
-
+    
         // the accumulated distance from the origin to that point
         unordered_map<System *, double> distances;
         for (const auto &[name, system] : systems)
         {
-            distances[system] = numeric_limits<int>::max(); // all nodes are unrecheable
+            distances[system] = numeric_limits<double>::max(); // all nodes are unreachable
         }
-
+    
         distances[origin] = 0;
-
+    
+        // Early exit check - if origin and destination are the same
+        if (origin == destination) {
+            cout << "\tPath: " << origin->get_name() << " with a total jumps of: 0" << endl;
+            return 0;
+        }
+    
         for (int n = 0; n < n_systems; n++)
         { // Dijkstra is going to take 1 iteration per node
-
+    
             System *u = closest_to_origin(visited, distances); // take the best option (min cost)
             if (u == nullptr)
             {
                 break; // no more nodes to study
             }
+            
             visited[u] = 1;
-
+            
+            // Early termination if we've processed the destination
+            if (u == destination) {
+                break;
+            }
+    
             for (const auto &[name, system] : u->get_adjacent_systems())
             { // for all adjacent systems (name, System*)
                 double w = u->get_adjacent_system_distance(system);
@@ -122,21 +134,35 @@ public:
                 }
             }
         }
-
-        //d_printSolution(previous, distances, origin);
-
-        vector<System*> minimum_path = get_shortest_solution(previous, distances, origin);
+    
+        // Check if destination is reachable
+        if (distances[destination] == numeric_limits<double>::max()) {
+            cout << "No possible path from " << origin->get_name() << " to " << destination->get_name() << endl;
+            return -1;
+        }
+    
+        // Reconstruct the path from origin to destination
+        vector<System*> minimum_path;
+        System *prev = destination;
+    
+        while (prev != nullptr) {
+            minimum_path.push_back(prev);
+            prev = previous[prev];
+        }
+        
+        // Reverse the path to get it from origin to destination
+        reverse(minimum_path.begin(), minimum_path.end());
+    
         cout << "\tPath: ";
-        for (size_t i = minimum_path.size(); i > 0; --i)
-        {
-            cout << minimum_path[i - 1]->get_name();
-            if (i > 1)
+        for (size_t i = 0; i < minimum_path.size(); ++i) {
+            cout << minimum_path[i]->get_name();
+            if (i < minimum_path.size() - 1)
                 cout << " -> ";
         }
         cout << " with a total jumps of: " << minimum_path.size() << endl;
+        
         return 1;
     }
-
     void d_printSolution(unordered_map<System *, System *> previous,
                          unordered_map<System *, double> distances,
                          System *origin)
@@ -173,46 +199,6 @@ public:
             }
         }
     }
-
-    vector<System *> get_shortest_solution(unordered_map<System *, System *> previous, unordered_map<System *, double> distances, System *origin)
-    {
-        // returns the path with the least possible jumps
-        double total_jumps = numeric_limits<double>::max();
-        vector<System *> minimum_path;
-
-        for (const auto &[name, system] : systems)
-        {
-            if (distances[system] == numeric_limits<double>::max())
-            {
-                throw new logic_error("No possible path to system");
-            }
-            else if (name == origin->get_name())
-            {
-                continue;
-            }
-            else
-            {
-                vector<System *> minimum_local_path;
-                System *prev = system;
-
-                while (prev != nullptr)
-                {
-                    minimum_local_path.push_back(prev);
-                    prev = previous[prev];
-                }
-
-                double total_local_jumps = minimum_local_path.size();
-
-                if (total_local_jumps <= total_jumps)
-                {
-                    reverse(minimum_local_path.begin(), minimum_local_path.end());
-                    minimum_path = minimum_local_path;
-                    total_jumps = total_local_jumps;
-                }
-            }
-        }
-        return minimum_path;
-    };
 };
 
 #endif

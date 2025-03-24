@@ -2,6 +2,7 @@
 #define STATE_H
 
 #include "system.h"
+#include "graph.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ class State{
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
 
-        vector<State*>max_sec_heuristic(System* node, System* destination){
+        vector<State*>max_sec_heuristic(Graph g, System* node, System* destination){
             // HEURISTIC g(x) where it is selected the system with the maximum security
             vector<State*> priority_states_queue = {};
             if (node->get_name() ==  destination->get_name()){
@@ -32,7 +33,13 @@ class State{
             double max = numeric_limits<double>::min();
             System* curr = nullptr;
             for (int i = 0; i < adjacents.size(); i++){
-                if (adjacents[i]->get_security() > max) {
+
+                double sys_status = adjacents[i]->get_security(); // g(x) = status
+                int r = g.dijkstra(node, destination); // f(x) = dijkstra
+
+                double heuristic_result = sys_status + (double)r; // h(x)
+
+                if (heuristic_result > max) {
                     max = adjacents[i]->get_security();
                     curr = adjacents[i];
                     State* new_s = new State();
