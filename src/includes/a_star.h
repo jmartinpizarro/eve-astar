@@ -53,7 +53,7 @@ vector<System*> a_star(Graph g, State* origin, State* destination){
     
     while (open_list.size() > 0){
         State* s_system = open_list.front();
-        cout << s_system->currentSystem->get_name() << endl;
+        cout << "Executing it for " << s_system->currentSystem->get_name() << endl;
         open_list.pop_front();
 
         if (s_system->currentSystem == destination->currentSystem){

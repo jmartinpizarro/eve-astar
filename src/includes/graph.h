@@ -144,7 +144,14 @@ public:
         // Reconstruct the path from origin to destination
         vector<System*> minimum_path;
         System *prev = destination;
+
+        d_printSolution(minimum_path, prev, previous);
     
+        return 1;
+    }
+    void d_printSolution(vector<System*> minimum_path, System* prev,
+                        unordered_map<System *, System *> previous)
+    {
         while (prev != nullptr) {
             minimum_path.push_back(prev);
             prev = previous[prev];
@@ -160,43 +167,6 @@ public:
                 cout << " -> ";
         }
         cout << " with a total jumps of: " << minimum_path.size() << endl;
-        
-        return 1;
-    }
-    void d_printSolution(unordered_map<System *, System *> previous,
-                         unordered_map<System *, double> distances,
-                         System *origin)
-    {
-
-        cout << "Minimum path from system: " << origin->get_name() << endl;
-
-        for (const auto &[name, system] : systems)
-        {
-            if (distances[system] == numeric_limits<double>::max())
-            {
-                cout << "No possible path to system " << system->get_name() << endl;
-            }
-            else
-            {
-                vector<System *> minimum_path;
-                System *prev = system;
-
-                while (prev != nullptr)
-                {
-                    minimum_path.push_back(prev);
-                    prev = previous[prev];
-                }
-
-                cout << "\tPath: ";
-                for (size_t i = minimum_path.size(); i > 0; --i)
-                {
-                    cout << minimum_path[i - 1]->get_name();
-                    if (i > 1)
-                        cout << " -> ";
-                }
-                cout << " (Total cost: " << distances[system] << ")" << endl;
-            }
-        }
     }
 };
 

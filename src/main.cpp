@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
     Graph g = read_file(argv[1], &origin, &destination);
 
     cout << origin << " - " << destination << endl;
+    cout << "=== A* Algorithm is starting" << endl;
 
     try{
         //g.print_graph();
