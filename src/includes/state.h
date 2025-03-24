@@ -8,10 +8,12 @@ using namespace std;
 
 class State{
     public:
+        State* prev;
         System* currentSystem;
+        double heuristic_value;
 
         // constructor by default is a nullptr
-        State(System* system = nullptr) : currentSystem(system) {}
+        State(State* prev = nullptr, System* system = nullptr) : currentSystem(system) {}
 
         bool operator==(const State& other) const {
             if (!currentSystem || !other.currentSystem) {
@@ -20,33 +22,35 @@ class State{
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
 
-        vector<State*>max_sec_heuristic(Graph g, System* node, System* destination){
+        vector<State*>max_sec_heuristic(Graph g, State* node, System* destination){
             // HEURISTIC g(x) where it is selected the system with the maximum security
             vector<State*> priority_states_queue = {};
-            if (node->get_name() ==  destination->get_name()){
+            if (node->currentSystem->get_name() ==  destination->get_name()){
                 return {}; // we are at the destination, h(x) = 0
             }
             vector<System*>adjacents;
-            for (const auto& [name, system] : node->get_adjacent_systems()){
+            for (const auto& [name, system] : node->currentSystem->get_adjacent_systems()){
                 adjacents.push_back(system);
             }
-            double max = numeric_limits<double>::min();
-            System* curr = nullptr;
-            for (int i = 0; i < adjacents.size(); i++){
-
+            for (int i = 0; i < adjacents.size(); i++) {
                 double sys_status = adjacents[i]->get_security(); // g(x) = status
-                int r = g.dijkstra(node, destination); // f(x) = dijkstra
-
+                int r = g.dijkstra(node->currentSystem, destination); // f(x) = dijkstra
+            
                 double heuristic_result = sys_status + (double)r; // h(x)
-
-                if (heuristic_result > max) {
-                    max = adjacents[i]->get_security();
-                    curr = adjacents[i];
-                    State* new_s = new State();
-                    new_s->currentSystem = curr;
-                    priority_states_queue.insert(priority_states_queue.begin(), new_s);
-                }
+            
+                State* new_s = new State();
+                new_s->currentSystem = adjacents[i];
+                new_s->prev = node;
+                new_s->heuristic_value = heuristic_result;
+                priority_states_queue.push_back(new_s);
             }
+            
+            // sort the vector for obtaining the correct order
+            std::sort(priority_states_queue.begin(), priority_states_queue.end(),
+                      [](State* a, State* b) {
+                          return a->heuristic_value > b->heuristic_value;
+                      });
+            
             return priority_states_queue;
         }
 };

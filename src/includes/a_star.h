@@ -44,7 +44,7 @@
 #include "state.h"
 #include <unordered_set>
 
-vector<System*> a_star(Graph g, State* origin, State* destination){
+State* a_star(Graph g, State* origin, State* destination){
     // A* Implementation
     deque<State*> open_list;
     unordered_set<System*> closed_systems; // tracks the systems already visited (not the states)
@@ -53,20 +53,18 @@ vector<System*> a_star(Graph g, State* origin, State* destination){
     
     while (open_list.size() > 0){
         State* s_system = open_list.front();
-        cout << "Executing it for " << s_system->currentSystem->get_name() << endl;
         open_list.pop_front();
 
-        if (s_system->currentSystem == destination->currentSystem){
-            return {};
+        if (s_system->currentSystem == destination->currentSystem){ // we found a solution
+            return s_system;
         }
         
-        if (closed_systems.find(s_system->currentSystem) != closed_systems.end()) {
+        if (closed_systems.find(s_system->currentSystem) != closed_systems.end()) { // already in closed list, useless
             continue;
         }
-        
         closed_systems.insert(s_system->currentSystem);
-        
-        vector<State*> heuristics_results = s_system->max_sec_heuristic(g, s_system->currentSystem, destination->currentSystem);
+
+        vector<State*> heuristics_results = s_system->max_sec_heuristic(g, s_system, destination->currentSystem);
         for (int i = heuristics_results.size() - 1; i >= 0; i--){
             // if not processed, add it to the open_list
             if (closed_systems.find(heuristics_results[i]->currentSystem) == closed_systems.end()){

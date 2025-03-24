@@ -142,16 +142,16 @@ public:
         }
     
         // Reconstruct the path from origin to destination
-        vector<System*> minimum_path;
-        System *prev = destination;
-
-        d_printSolution(minimum_path, prev, previous);
+        
+        /*System *prev = destination;
+        d_printSolution(minimum_path, prev, previous);*/
     
         return 1;
     }
-    void d_printSolution(vector<System*> minimum_path, System* prev,
+    void d_printSolution(System* prev,
                         unordered_map<System *, System *> previous)
     {
+        vector<System*> minimum_path;
         while (prev != nullptr) {
             minimum_path.push_back(prev);
             prev = previous[prev];
@@ -167,6 +167,7 @@ public:
                 cout << " -> ";
         }
         cout << " with a total jumps of: " << minimum_path.size() << endl;
+        return;
     }
 };
 

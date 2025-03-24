@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     Graph g = read_file(argv[1], &origin, &destination);
 
     cout << origin << " - " << destination << endl;
-    cout << "=== A* Algorithm is starting" << endl;
+    cout << "=== A* Algorithm is starting ===" << endl;
 
     try{
         //g.print_graph();
@@ -37,10 +37,30 @@ int main(int argc, char* argv[]) {
         State* destination_S = new State();
         get_origin_destination_systems(&g, origin_S, destination_S);
         
-        a_star(g, origin_S, destination_S);
+        State* a_state = a_star(g, origin_S, destination_S);
+
+        if (!a_state){
+            cout << " A*: no possible solution found" << endl;
+            return -1;
+        }
+
+        deque<State*>path;
+        while (a_state){
+            path.push_front(a_state);
+            a_state = a_state->prev;
+        }
+        
+        cout << "\tPath: ";
+        for (size_t i = 0; i < path.size(); ++i) {
+            cout << path[i]->currentSystem->get_name();
+            if (i < path.size() - 1)
+                cout << " -> ";
+        }
+        cout << " with a total jumps of: " << path.size() << endl;
 
         delete origin_S;
         delete destination_S;
+        cout << "=== A* Algorithm has ended ===" << endl;
     } catch (const out_of_range& e) {
         cerr << "Error" << e.what() << "\n";
         return -1;
