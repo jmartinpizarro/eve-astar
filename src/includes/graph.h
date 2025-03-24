@@ -186,7 +186,6 @@ public:
                     minimum_path.push_back(prev);
                     prev = previous[prev];
                 }
-                reverse(minimum_path.begin(), minimum_path.end());
 
                 cout << "\tPath: ";
                 for (size_t i = minimum_path.size(); i > 0; --i)
