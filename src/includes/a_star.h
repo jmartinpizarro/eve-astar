@@ -43,7 +43,12 @@
 #include "system.h"
 #include "state.h"
 #include <unordered_set>
-
+/**
+ * @brief A* algorithm
+ * @param g: Graph. Necessary for calculating the heuristic
+ * @param origin, destination: states nodes
+ * @return State*. The final node, solution has been found
+ */
 State* a_star(Graph g, State* origin, State* destination){
     // A* Implementation
     deque<State*> open_list;
