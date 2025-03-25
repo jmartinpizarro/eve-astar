@@ -48,7 +48,7 @@ SystemN,Concord_sec_status2,AdjSystem1(distance),AdjSystem2(distance), ... AdjSy
 ```
 
 For example, here is a simplified version of one test:
-![A simplified test of the EVE PathFinding Problem](test.png)
+![A simplified test of the EVE PathFinding Problem](img/test.png)
 
 
 
