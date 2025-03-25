@@ -15,6 +15,13 @@
 
 using namespace std;
 
+/**
+ * @brief Processes a line of a .txt file
+ * @param g inserts the system created into the graph
+ * @param content content of the string (line) to process
+ * @param counter depending on the value, it process one part of the line or another
+ * @return 0 if everythong went correctly
+ */
 int process_line(Graph* g, string* content, int* counter) {
     string word1, word2, word3;
     stringstream s(*content);
@@ -49,7 +56,13 @@ int process_line(Graph* g, string* content, int* counter) {
     return 0;
 }
 
-
+/**
+ * @brief Reads a file
+ * @param fileRoute the route of the file
+ * @param origin origin variable 
+ * @param destination destination variable
+ * @return a Graph with all the system nodes and connections
+ */
 Graph read_file(string fileRoute, string* origin, string* destination){
 
     Graph g;
