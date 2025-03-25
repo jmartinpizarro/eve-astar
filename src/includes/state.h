@@ -5,12 +5,15 @@
 #include "graph.h"
 
 using namespace std;
-
+/**
+ * @class State
+ * @brief Instance of State node, used for the A*
+ */
 class State{
     public:
-        State* prev;
-        System* currentSystem;
-        double heuristic_value;
+        State* prev; // pointer to prev node
+        System* currentSystem; // current position of the node
+        double heuristic_value; // heuristic value of State
 
         // constructor by default is a nullptr
         State(State* prev = nullptr, System* system = nullptr) : currentSystem(system) {}
@@ -22,6 +25,13 @@ class State{
             return currentSystem->get_name() == other.currentSystem->get_name();
         }
 
+        /**
+         * @brief Calculates the order of the expanded nodes given the h(x)
+         * @param g: Graph. Necessary for calculating the Dijkstra f(x)
+         * @param node: State*, current state of the a*
+         * @param destination: for calculating the dijkstra path
+         * @return vector with the new order of the new expanded nodes
+         */
         vector<State*>max_sec_heuristic(Graph g, State* node, System* destination){
             // HEURISTIC g(x) where it is selected the system with the maximum security
             vector<State*> priority_states_queue = {};
