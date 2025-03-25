@@ -6,25 +6,34 @@
 #include <limits>
 
 #include "system.h"
-
+/**
+ * @class Graph
+ * @brief A Graph instance, made of Systems pointers as nodes.
+ */
 class Graph
 {
 private:
-    unordered_map<string, System *> systems;
-    int n_systems;
+    unordered_map<string, System *> systems; // represented as a dict of Systems
 
 public:
-    System *get_system(const string &name)
+    int n_systems; // number of total nodes
+
+    /**
+     * @brief get system object given a name
+     * @param name the key of the dict
+     * @return a System pointer
+     */
+    System* get_system(const string name)
     {
         return systems[name];
     }
 
-    int get_n_systems()
-    {
-        return n_systems;
-    }
-
-    System *get_or_create_system(const string &name, double security = 0.0)
+    /**
+     * @brief get system object given a name
+     * @param name the key of the dict
+     * @return a System pointer
+     */
+    System* get_or_create_system(const string &name, double security = 0.0)
     {
         if (systems.find(name) == systems.end())
         {
@@ -34,7 +43,14 @@ public:
         return systems[name];
     }
 
-    void add_connection(const string &from, const string &to, double distance)
+    /**
+     * @brief adds an edge to the graph between two systems
+     * @param from the key of the dict (origin node)
+     * @param to the key of the dict (destination node)
+     * @param distance distance (AU)
+     * @return void
+     */
+    void add_connection(const string from, const string to, double distance)
     {
         System *system1 = get_or_create_system(from);
         System *system2 = get_or_create_system(to);
@@ -43,6 +59,10 @@ public:
         system1->add_adjacent_system_distance(system2, distance);
     }
 
+    /**
+     * @brief prints the graph data
+     * @return void
+     */
     void print_graph()
     {
         for (const auto &[name, system] : systems)
@@ -56,11 +76,14 @@ public:
         }
     }
 
-    System *closest_to_origin(unordered_map<System *, int> visited, unordered_map<System *, double> distances)
+    /**
+     * @brief states which is the closest to the origin point (for Dijkstra algorithm)
+     * @param visited u_map that states if a system has been visited or not
+     * @param distances u_map that states the distances between systems (aka jumps)
+     * @return System pointer
+     */
+    System* closest_to_origin(unordered_map<System *, int> visited, unordered_map<System *, double> distances)
     {
-        /* This function returns the closest node to the origin from all the
-        nodes that have not been visited yet*/
-
         double min = numeric_limits<int>::max();
         System *sys = nullptr;
 
@@ -76,7 +99,14 @@ public:
         return sys;
     }
 
-    int dijkstra(System *origin, System *destination)
+
+    /**
+     * @brief Dijkstra algorithm
+     * @param origin origin system
+     * @param destination destination system
+     * @return 1 if everything went correct
+     */
+    int dijkstra(System* origin, System* destination)
     {
         /* Modified Dijkstra Algorithm. Calculates the shortest path between origin and destination */
     
@@ -148,6 +178,13 @@ public:
     
         return 1;
     }
+
+    /**
+     * @brief prints the dijkstra solution
+     * @param prev init as the destination, it will do backtracking
+     * @param previous u_map that states the backtracking
+     * @return void
+     */
     void d_printSolution(System* prev,
                         unordered_map<System *, System *> previous)
     {
