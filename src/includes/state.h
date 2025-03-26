@@ -47,7 +47,7 @@ class State{
                 int r = g.dijkstra(node->currentSystem, destination); // f(x) = dijkstra
             
                 // Apply a penalty for systems with low security
-                double penalty_factor = (sys_status < 0.5) ? 2.0 : 1.0;  // Strong penalty for low security
+                double penalty_factor = exp(-sys_status);
                 
                 double heuristic_result = sys_status + (double)r * penalty_factor; // h(x) = g(x) + penalty * f(x)
         
