@@ -56,7 +56,7 @@ Currently, the input reader is a shit. Do not blame be, it was not the important
 > Pls follow the format
 
 For example, here is a simplified version of one test:
-![A simplified test of the EVE PathFinding Problem](img/simpleCase.png)
+![A simplified test of the EVE PathFinding Problem]!(img/useCase.png)
 
 Here, we must avoid, at all costs, the *insecure system* ($-1.0 <= sys_status <= 0.4$). Then, the unique possible path is:
 
