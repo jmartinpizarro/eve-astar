@@ -60,7 +60,6 @@ class State{
                       [](State* a, State* b) {
                           return a->heuristic_value > b->heuristic_value;
                       });
-            
             return priority_states_queue;
         }
 };

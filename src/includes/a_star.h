@@ -73,7 +73,7 @@ State* a_star(Graph g, State* origin, State* destination){
         for (int i = heuristics_results.size() - 1; i >= 0; i--){
             // if not processed, add it to the open_list
             if (closed_systems.find(heuristics_results[i]->currentSystem) == closed_systems.end()){
-                open_list.push_back(heuristics_results[i]);
+                open_list.push_front(heuristics_results[i]);
             }
         }
     }
