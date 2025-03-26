@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
         
         cout << "\tPath: ";
         for (size_t i = 0; i < path.size(); ++i) {
-            cout << path[i]->currentSystem->get_name();
+            cout << path[i]->currentSystem->get_name() << '(' << path[i]->currentSystem->get_security() << ')';
             if (i < path.size() - 1)
                 cout << " -> ";
         }
