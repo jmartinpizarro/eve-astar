@@ -52,7 +52,7 @@ Currently, the input reader is a shit. Do not blame be, it was not the important
 - seg default because you didn't follow the format
 - weird graph nodes because you didn't follow the format
 
-> [!CAUTION] Pls follow the format
+> [!CAUTION]
 > Pls follow the format
 
 For example, here is a simplified version of one test:
