@@ -52,11 +52,11 @@ Currently, the input reader is a shit. Do not blame be, it was not the important
 - seg default because you didn't follow the format
 - weird graph nodes because you didn't follow the format
 
->[!ALERT] Pls follow the format
+>[!DANGER] Pls follow the format
 > Pls follow the format
 
 For example, here is a simplified version of one test:
-![A simplified test of the EVE PathFinding Problem]!(img/useCase.png)
+![A simplified test of the EVE PathFinding Problem](img/useCase.png)
 
 Here, we must avoid, at all costs, the *insecure system* ($-1.0 <= sys_status <= 0.4$). Then, the unique possible path is:
 
