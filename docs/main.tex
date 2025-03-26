@@ -1,0 +1,133 @@
+%% Short data paper template
+%% Created by Simon Hengchen and Nilo Pedrazzini for the Journal of Open Humanities Data (https://openhumanitiesdata.metajnl.com)
+
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{johd}
+
+\title{EVE Astar}
+
+\author{Javier Martín Pizarro\\
+        \small Independent, Universidad Carlos III de Madrid, Madrid, Spain \\}
+
+\begin{document}
+\maketitle
+
+\begin{abstract} 
+\noindent A short (ca. 100 word) summary of the dataset being described: what the data covers, how it was collected, how it is stored, and a short description of its reuse potential. \end{abstract}
+
+\noindent\keywords{keyword 1; keyword 2; lower case except names, max 6 }\\
+
+\noindent\authorroles{For determining author roles, please use following taxonomy: \url{https://credit.niso.org/}. Please list the roles for each author.}\\
+
+\noindent{Data papers have a word limit of 1,000-1,500 words, excluding title, author affiliations, abstract, Tables/Figures and references, but including Tables/Figures captions and footnotes. To complete this data paper template, please delete or replace the text not given in bold with your own text.} \\
+
+\noindent{Authors must ensure that the manuscript text, including the abstract, is original and not directly taken from dataset repository descriptions. The text must be paraphrased and adapted to fit the context of the article.}
+
+\section{Overview}
+\paragraph{Repository location} Indicate where the dataset repository is located – a DOI of the openly available dataset being described is required.
+\paragraph{Context} Was this data produced as part of a research project, thesis, course work, or is this data used in a paper(s)? If so, please list the appropriate bibliographic information here. Note: This journal uses a style based on the APA system (see \href{https://openhumanitiesdata.metajnl.com/about/submissions/#References}{here}).\\
+
+\noindent The following are some basic citation commands in \LaTeX: \\
+
+\noindent
+\verb|\citet| $\rightarrow$ \citet{jenset&mcgil}\\
+\verb|\citet| $\rightarrow$ \citet{shree-a}\\
+\verb|\citep| $\rightarrow$ \citep{fabricius-hansen2012b}\\
+\verb|\citealp| $\rightarrow$ (\citealp{eckhoff2018a})\\
+\verb|\citealp| $\rightarrow$ (\citealp{eckhoff2018a}; \citealp{fabricius-hansen2012b}; \citealp{shree-a})\\
+
+\noindent The following are other basic functions you might find useful:\\
+
+\noindent Bullet points:
+\begin{itemize}
+    \item Some point
+    \item Another point
+\end{itemize}
+
+\noindent Numbered points:
+\begin{itemize}
+    \item[1.] Some numbered point 
+    \item[2.] Another numbered point
+\end{itemize}
+
+\noindent Adding a footnote\footnote{This is a footnote}. \\
+
+\noindent A simple table:
+
+\begin{table}[H]
+\centering
+\caption{\label{tab1} A caption.} % Label your table as you like
+\begin{tabular}{cccc}
+\hline
+1 & 2 & 3 & 4 \\
+\hline
+a & b & c & d\\
+e & f & g & h\\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent Please refer to your table as: Table \ref{tab1}. \\
+
+\noindent To add a figure, upload the figure into the \texttt{images} folder, and then embed it:
+
+\begin{figure}[H]
+\centering
+\includegraphics{images/image.jpg}
+\caption{\label{fig1}JOHD's logo.}
+\end{figure}
+
+\noindent To resize the figure:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.2\textwidth]{images/image.jpg}
+\caption{\label{fig2}JOHD's logo.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{images/image.jpg}
+\caption{\label{fig3}JOHD's logo.}
+\end{figure}
+
+\noindent Please refer to your figures as: Figure \ref{fig1}, Figure \ref{fig2}, etc.
+
+\section{Method}
+Describe the methods used to create the dataset, including the following sub-headings:
+\paragraph{Steps} The series of procedures followed to produce the dataset. This should include any source data used, as well as software and instrumentation involved.
+\paragraph{Sampling strategy} If relevant, please outline the sampling strategy used to produce the data.
+\paragraph{Quality control} If applicable. Please list the methods used for quality control in the production of the data (i.e., steps taken to normalize the data).
+
+\section{Dataset Description}
+\paragraph{Repository name} The name of the repository to which the data is uploaded. E.g., Figshare, Dataverse, etc. 
+\paragraph{Object name} Typically the name of the file or file set in the repository.
+\paragraph{Format names and versions} E.g., ASCII, CSV, Autocad, EPS, JPEG, Excel, SQL, etc.
+\paragraph{Creation dates} The start and end dates of when the data was created (YYYY-MM-DD).
+\paragraph{Dataset creators} Please list anyone who helped to create the dataset (who may or may not be an author of the data paper), including their roles (using and affiliations).
+\paragraph{Language} Languages used in the dataset (i.e., for variable names etc.).
+\paragraph{License} The open license under which the data has been deposited (e.g., CC0). 
+\paragraph{Publication date} If already known, the date in which the dataset was published in the repository (YYYY-MM-DD).
+
+\section{Reuse Potential}
+Please describe the ways in which your data could be reused by other researchers both within and outside of your field. For example, this might include aggregation, further analysis, reference, validation, teaching or collaboration. This section should also include limitations to, or potential barriers for reuse.
+
+\section*{Acknowledgements}
+Please add any relevant acknowledgements to anyone else that assisted with the project in which the data was created but did not work directly on the data itself.
+
+\section*{Funding Statement}
+If the data resulted from funded research please list the funder and grant number here.
+
+\section*{Competing interests} 
+If any of the authors have any competing interests then these must be declared. If there are no competing interests to declare then the following statement should be present: The author(s) has/have no competing interests to declare.
+
+\bibliographystyle{johd}
+\bibliography{bib}
+
+\section*{Supplementary Files (optional)}
+Any supplementary/additional files that should link to the main publication must be listed, with a corresponding number, title and option description. Supplementary files should also be cited in the main text.
+Note: supplementary files will not be typeset so they must be provided in their final form. They will be assigned a DOI and linked to from the publication.
+
+\end{document}

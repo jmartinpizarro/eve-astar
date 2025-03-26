@@ -12,6 +12,9 @@ EVE-astar is a personal project for deepning into heuristics and search algorith
 <br>
 Made in C++ for optimization, it has been implemented from zero to hero.
 
+> [!NOTE]
+> Do not worry. All decisiones choices, a more detailed description of the problem and more is being detailed on the following ![paper](docs/EVE_Astar.pdf)
+<br>
 
 ## Use-Cases
 1. Given the map of a region/constellation, the origin point (A) and the destination point (B), you want to **travel using the shortest _and safest_ route possible**.
@@ -51,13 +54,14 @@ Currently, the input reader is a shit. Do not blame be, it was not the important
 
 - seg default because you didn't follow the format
 - weird graph nodes because you didn't follow the format
-
+<br>
 > [!CAUTION]
 > Pls follow the format
-
+<br>
 For example, here is a simplified version of one test:
+<br>
 ![A simplified test of the EVE PathFinding Problem](img/useCase.png)
-
+<br>
 Here, we must avoid, at all costs, the *insecure system* ($-1.0 <= sys_status <= 0.4$). Then, the unique possible path is:
 
 `Jita -> Villore -> Amarr`, as none of them are considered insecure.
