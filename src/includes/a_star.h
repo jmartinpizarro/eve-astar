@@ -43,24 +43,35 @@
 #include "system.h"
 #include "state.h"
 #include <unordered_set>
+
+#include <queue>  // for priority_queue
+#include <unordered_map>  // for tracking g(x) values
+
 /**
  * @brief A* algorithm
  * @param g: Graph. Necessary for calculating the heuristic
  * @param origin, destination: states nodes
  * @return State*. The final node, solution has been found
  */
-State* a_star(Graph g, State* origin, State* destination){
+State* a_star(Graph g, State* origin, State* destination) {
     // A* Implementation
-    deque<State*> open_list;
-    unordered_set<System*> closed_systems; // tracks the systems already visited (not the states)
+    auto compare = [](State* a, State* b) {
+        return a->heuristic_value > b->heuristic_value; // Priority queue based on heuristic value
+    };
     
-    open_list.push_back(origin);
+    std::priority_queue<State*, std::vector<State*>, decltype(compare)> open_list(compare);
+    std::unordered_map<System*, double> g_values;  // stores g(x) for each system
+    std::unordered_set<System*> closed_systems;    // tracks the systems already visited (not the states)
     
-    while (open_list.size() > 0){
-        State* s_system = open_list.front();
-        open_list.pop_front();
-
-        if (s_system->currentSystem == destination->currentSystem){ // we found a solution
+    origin->heuristic_value = 0; // starting point heuristic (f(x) = g(x) + h(x))
+    g_values[origin->currentSystem] = 0;  // g(x) of the origin system is 0
+    open_list.push(origin);
+    
+    while (!open_list.empty()) {
+        State* s_system = open_list.top();   // get the node with the lowest f(x)
+        open_list.pop();
+        
+        if (s_system->currentSystem == destination->currentSystem) { // we found a solution
             return s_system;
         }
         
@@ -68,15 +79,22 @@ State* a_star(Graph g, State* origin, State* destination){
             continue;
         }
         closed_systems.insert(s_system->currentSystem);
-
+        
         vector<State*> heuristics_results = s_system->max_sec_heuristic(g, s_system, destination->currentSystem);
-        for (int i = heuristics_results.size() - 1; i >= 0; i--){
-            // if not processed, add it to the open_list
-            if (closed_systems.find(heuristics_results[i]->currentSystem) == closed_systems.end()){
-                open_list.push_front(heuristics_results[i]);
+        for (int i = 0; i < heuristics_results.size(); i++) {
+            State* new_state = heuristics_results[i];
+            double g_cost = g_values[s_system->currentSystem] + 1; // assume each transition has cost 1 (could be adjusted)
+            
+            // If the system has not been visited or if we found a greater path
+            if (g_values.find(new_state->currentSystem) == g_values.end() || g_cost > g_values[new_state->currentSystem]) {
+                g_values[new_state->currentSystem] = g_cost;
+                new_state->heuristic_value = g_cost + new_state->heuristic_value; // update f(x) = g(x) + h(x)
+                open_list.push(new_state);
             }
         }
     }
-    return {};
+    
+    return nullptr; // return nullptr if no solution found
 }
+
 #endif
