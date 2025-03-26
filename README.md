@@ -47,9 +47,21 @@ System2,Concord_sec_status2,AdjSystem1(distance),AdjSystem2(distance), ... AdjSy
 SystemN,Concord_sec_status2,AdjSystem1(distance),AdjSystem2(distance), ... AdjSystemN(distance)
 ```
 
+Currently, the input reader is a shit. Do not blame be, it was not the important part. Yes, I need to fix it. Any possible issues you may found are:
+
+- seg default because you didn't follow the format
+- weird graph nodes because you didn't follow the format
+
+>[!ALERT] Pls follow the format
+> Pls follow the format
+
 For example, here is a simplified version of one test:
-![A simplified test of the EVE PathFinding Problem](img/test.png)
+![A simplified test of the EVE PathFinding Problem](img/simpleCase.png)
 
+Here, we must avoid, at all costs, the *insecure system* ($-1.0 <= sys_status <= 0.4$). Then, the unique possible path is:
 
+`Jita -> Villore -> Amarr`, as none of them are considered insecure.
+
+Obviously, there are more complex cases that won't considered here, but treated as part of the tests. Do not hesitate and try your files with this $A^*$. If you detect any problem, please raise an issue to discuss about it.
 
 
