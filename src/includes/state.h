@@ -44,12 +44,12 @@ class State{
             }
             for (int i = 0; i < adjacents.size(); i++) {
                 double sys_status = adjacents[i]->get_security(); // g(x) = status
-                int r = g.dijkstra(node->currentSystem, destination); // f(x) = dijkstra
+                int r = g.dijkstra(adjacents[i], destination); // f(x) = dijkstra
             
                 // Apply a penalty for systems with low security
-                double penalty_factor = exp(-sys_status);
+                double penalty_factor = exp(-sys_status);  // Strong penalty for low security
                 
-                double heuristic_result = sys_status + (double)r * penalty_factor; // h(x) = g(x) + penalty * f(x)
+                double heuristic_result = (1 - sys_status) + ((double)r * penalty_factor); // h(x) = g(x) + penalty * f(x)
         
             
                 State* new_s = new State();
@@ -62,7 +62,7 @@ class State{
             // sort the vector for obtaining the correct order
             std::sort(priority_states_queue.begin(), priority_states_queue.end(),
                       [](State* a, State* b) {
-                          return a->heuristic_value > b->heuristic_value;
+                          return a->heuristic_value < b->heuristic_value;
                       });
                       
             return priority_states_queue;

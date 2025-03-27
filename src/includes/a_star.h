@@ -56,7 +56,7 @@
 State* a_star(Graph g, State* origin, State* destination) {
     // A* Implementation
     auto compare = [](State* a, State* b) {
-        return a->heuristic_value > b->heuristic_value; // Priority queue based on heuristic value
+        return a->heuristic_value < b->heuristic_value; // Priority queue based on heuristic value
     };
     
     std::priority_queue<State*, std::vector<State*>, decltype(compare)> open_list(compare);
@@ -86,7 +86,7 @@ State* a_star(Graph g, State* origin, State* destination) {
             double g_cost = g_values[s_system->currentSystem] + 1; // assume each transition has cost 1 (could be adjusted)
             
             // If the system has not been visited or if we found a greater path
-            if (g_values.find(new_state->currentSystem) == g_values.end() || g_cost > g_values[new_state->currentSystem]) {
+            if (g_values.find(new_state->currentSystem) == g_values.end() || g_cost < g_values[new_state->currentSystem]) {
                 g_values[new_state->currentSystem] = g_cost;
                 new_state->heuristic_value = g_cost + new_state->heuristic_value; // update f(x) = g(x) + h(x)
                 open_list.push(new_state);
