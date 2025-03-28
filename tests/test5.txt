@@ -2,7 +2,7 @@ Jita
 Amarr
 Jita,0.9,Perimeter(1),Tama(2)
 Perimeter,0.8,Jita(1),Urlen(2),Dodixie(3)
-Urlen,0.8,Perimter(2)
+Urlen,0.8,Perimeter(2)
 Dodixie,0.9,Perimeter(3),Amarr(4)
 Tama,0.4,Jita(2),Amarr(2)
 Amarr,0.9,Tama(2),Dodixie(4)
