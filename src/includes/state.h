@@ -43,15 +43,18 @@ class State{
                 adjacents.push_back(system);
             }
             for (int i = 0; i < adjacents.size(); i++) {
-                double sys_status = adjacents[i]->get_security(); // g(x) = status
-                int r = g.dijkstra(adjacents[i], destination); // f(x) = dijkstra
+                double sys_status = adjacents[i]->get_security(); // h1(n) = status
+                int r = g.dijkstra(adjacents[i], destination); // h2(n) = dijkstra
             
                 // Apply a penalty for systems with low security
-                double penalty_factor = exp(-sys_status);  // Strong penalty for low security
-                
-                double heuristic_result = (1 - sys_status) + ((double)r * penalty_factor); // h(x) = g(x) + penalty * f(x)
-        
-            
+                double heuristic_result;
+                if (sys_status >= 0.5){
+                    heuristic_result = (1 - sys_status);
+                } else {
+                    double penalty_factor = 10000;  // Strong penalty for low security
+                    heuristic_result = fabs(((1 - sys_status) + ((double)r * penalty_factor))); // Dijkstra may return -1 if no path found
+                }
+                        
                 State* new_s = new State();
                 new_s->currentSystem = adjacents[i];
                 new_s->prev = node;
