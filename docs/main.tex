@@ -5,6 +5,24 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{johd}
+\usepackage{amsthm}
+\usepackage{amsmath}
+
+% Definir un nuevo estilo de teorema sin cursiva
+\newtheoremstyle{customdef} % Nombre del estilo
+  {}    % Espaciado arriba
+  {}    % Espaciado abajo
+  {\normalfont} % Cuerpo del texto en fuente normal (sin cursiva)
+  {}    % Indentación
+  {\bfseries} % Título en negrita
+  {}   % Puntuación después del título
+  { }   % Espaciado después del título
+  {\thmname{#1}\thmnote{ \textbf{#3}}} % Formato del título
+
+% Aplicar el nuevo estilo
+\theoremstyle{customdef}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
 
 \title{EVE Astar: A system-pathfinder solver}
 
@@ -15,108 +33,128 @@
 \maketitle
 
 \begin{abstract} 
-\noindent This papers aims to explain and recreate the pathfinder solver used in EVE Online for travelling through systems. The algorithm and heuristics used will be discussed, as well as the advantages and disadvantages of it. \end{abstract}
+\noindent This paper aims to analyze and replicate the pathfinding algorithm used in EVE Online for navigating between star systems. It explores the underlying algorithm, the heuristics applied, and their impact on route optimization. Additionally, the paper discusses the advantages and limitations of this approach in the context of in-game travel. \end{abstract}
 
-\noindent\keywords{a star, EVE Online; heuristics}\\
+\noindent\keywords{A* algorithm, pathfinding, heuristics}\\
 
 \section{Overview}
-\paragraph{Introduction} EVE Online is considered one of the biggest spatial MMORPG, with more than 7500 systems to travel to
-\paragraph{Repository location} Indicate where the dataset repository is located – a DOI of the openly available dataset being described is required.
-\paragraph{Context} Was this data produced as part of a research project, thesis, course work, or is this data used in a paper(s)? If so, please list the appropriate bibliographic information here. Note: This journal uses a style based on the APA system (see \href{https://openhumanitiesdata.metajnl.com/about/submissions/#References}{here}).\\
+\paragraph{Context} EVE Online is considered one of the biggest spatial MMORPG, with more than 7500 systems to travel to. All those systems are connected between each other, conforming a graph $G(V,E)$. Players can travel through different systems following a determined path that can be calculated using an internal tool - a pathfinding solver.
 
-\noindent The following are some basic citation commands in \LaTeX: \\
+This solver has several use cases, where we can highlight the following:
 
-\noindent
-\verb|\citet| $\rightarrow$ \citet{jenset&mcgil}\\
-\verb|\citet| $\rightarrow$ \citet{shree-a}\\
-\verb|\citep| $\rightarrow$ \citep{fabricius-hansen2012b}\\
-\verb|\citealp| $\rightarrow$ (\citealp{eckhoff2018a})\\
-\verb|\citealp| $\rightarrow$ (\citealp{eckhoff2018a}; \citealp{fabricius-hansen2012b}; \citealp{shree-a})\\
-
-\noindent The following are other basic functions you might find useful:\\
-
-\noindent Bullet points:
 \begin{itemize}
-    \item Some point
-    \item Another point
+    \item Travel from $A$ to $B$ using the \textbf{shortest and safest path}.
+    \item Travel from $A$ to $B$ using the \textbf{insecurest path}.
+    \item Travel from $A$ to $B$ using the \textbf{shortest path}.
 \end{itemize}
 
-\noindent Numbered points:
+Each system has a CONCORD security status, in the interval $[-1.0, 1.0]$. Depending on the system's security, if you are attacked by other players, CONCORD Security will defend you sooner or later - or not. It is possible to divide the space in three categorical variables depending on the security:
+
 \begin{itemize}
-    \item[1.] Some numbered point 
-    \item[2.] Another numbered point
+    \item High security space (HS): $0.5 \leq sec \leq 1.0$. CONCORD security will spawn ships for defending your ship. Response time varies depending on the security, the higher the sooner they will appear. Capsuleers cannot freely engage other capsuleers without consequences.
+    \item Low secutity space (LS): $0.1 \leq sec \leq 0.4$. CONCORD security won't spawn ships, but CONCORD turrets will defend your ship. Capsuleers may freely engage other capsuleers.
+    \item Null security space (NS): $-1.0 \leq sec \leq 0.0$. Wormholes are included here. CONCORD does not exist in these systems. Capsuleers may freely engage other capsuleers.
 \end{itemize}
 
-\noindent Adding a footnote\footnote{This is a footnote}. \\
+Notice that wormholes connection varies dinamically, depending on \textit{rolling} and external factors. For this reason, they are not considered in the study.
 
-\noindent A simple table:
+\begin{definition}[Jump]
+Occurs when the player travels between two systems. In a Dijkstra algorithm, it can be considered as a cost, where $c = 1$.
+\end{definition}
 
-\begin{table}[H]
-\centering
-\caption{\label{tab1} A caption.} % Label your table as you like
-\begin{tabular}{cccc}
-\hline
-1 & 2 & 3 & 4 \\
-\hline
-a & b & c & d\\
-e & f & g & h\\
-\hline
-\end{tabular}
-\end{table}
+When hauling items between two points, most players decide to use the shortest and safest path possible, in order to avoid being ganked and reducing the number of jumps.
 
-\noindent Please refer to your table as: Table \ref{tab1}. \\
+\section{The Problem}
+It is possible to categorize the problem as a graph problem $G(V,E)$, where each system $V$ is connected through several gates $E$ to another system $V'$. This route is bidirectional, where travelling $A \leftrightarrow B$ is possible.
 
-\noindent To add a figure, upload the figure into the \texttt{images} folder, and then embed it:
+Assume that the capsuleer will always want to travel using the \textbf{shortest and safest} route possible.
 
 \begin{figure}[H]
-\centering
-\includegraphics{images/image.jpg}
-\caption{\label{fig1}JOHD's logo.}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/basicCase.png}
+    \caption{An example of the problem}
+    \label{fig:basicCase}
 \end{figure}
 
-\noindent To resize the figure:
+The previous image shows the simplest case possible, where the user wants to travel from Jita to Amarr. It has two possible paths: either choosing Tama (with a lower security status) or choosing Villore (with a higher security status). The obvious solution is $Jita \rightarrow Villore \rightarrow Amarr$.
+
+It is clearly seen that there is no possible way of calculating and optimal solution using greedy algorithms. For this case, the best algorithm to solve the problem is $A^*$.
+
+$A^*$ - and its variations - is one of the standards in computer science due to its optimality, completeness and efficiency.
+
+The major drawback of it is considered to be its own spatial complexity $O(b^d)$, where $b$ is the branching factor and $d$ is the depthning factor (more information is given in the subsection \ref{sec:actions}).
+
+\subsection{Problem Input}
+
+The input of this problem is:
+\begin{enumerate}
+    \item A graph $G(V,E)$. The vertices of the graph are possible locations for the capsuleer, and the edges are the possible transitions between locations.
+    \item Origin system. The system where the user starts its route.
+    \item Destination system. The system where the user ends its route.
+\end{enumerate}
+
+\subsection{Actions}\label{sec:actions}
+
+Between successive time points, the user can perform a \textit{move\_to(A, B)} action iff exists an edge that connects both nodes. The current location of the capsuleer goes from $A \rightarrow B$.
+
+Because of the complexity of the problem, and definition of the possible actions, the branching factor $b=n$, where $n$ are the adjacent vertices of $V$.
+
+The depthning factor $d=V$, where $V$ is the total number of vertices that conform the graph $G(V,E)$.
+
+
+
+\subsection{Constraints}
+
+Knowing this, it is possible to define a the main points of the problem:
+
+\begin{lemma}
+The capsuleer should avoid, if possible, any LS or NS systems, even if that means that the trip must be extended $n$ jumps.
+\end{lemma}
+
+\begin{lemma}
+While travelling through HS, the capsuleer should not take into consideration the security of the system, as they all are considered equally safe.
+\end{lemma}
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.2\textwidth]{images/image.jpg}
-\caption{\label{fig2}JOHD's logo.}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/useCase.png}
+    \caption{In this image, three possible paths are considered.}
+    \label{fig:useCase}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{images/image.jpg}
-\caption{\label{fig3}JOHD's logo.}
-\end{figure}
+In the previous figure, altough the safest route is $Villore \rightarrow Dodixie$, it is not the shortest. And assuming that every HS system is equally important (from a security status point of view), it is necessary to consider another function (heuristics are discussed in subsection \ref{sec:heuristics}).
 
-\noindent Please refer to your figures as: Figure \ref{fig1}, Figure \ref{fig2}, etc.
+\subsection{Heuristics}\label{sec:heuristics}
 
-\section{Method}
-Describe the methods used to create the dataset, including the following sub-headings:
-\paragraph{Steps} The series of procedures followed to produce the dataset. This should include any source data used, as well as software and instrumentation involved.
-\paragraph{Sampling strategy} If relevant, please outline the sampling strategy used to produce the data.
-\paragraph{Quality control} If applicable. Please list the methods used for quality control in the production of the data (i.e., steps taken to normalize the data).
+$A^*$ is a best-first algorithm. This means that after expanding a node, it will take the most promising next node. Then, it is possible to define a function $f(n)$ such as:
+$$f(n) = g(n) + h(n)$$
+\begin{itemize}
+    \item $g(n)$ is the \textbf{cost function} or accumulated cost function from origin to the current node. In this case, it is possible to calculate it using the Dijkstra algorithm.
+    \item $h(n)$ is the heuristic function calculated for each node. 
+\end{itemize}
 
-\section{Dataset Description}
-\paragraph{Repository name} The name of the repository to which the data is uploaded. E.g., Figshare, Dataverse, etc. 
-\paragraph{Object name} Typically the name of the file or file set in the repository.
-\paragraph{Format names and versions} E.g., ASCII, CSV, Autocad, EPS, JPEG, Excel, SQL, etc.
-\paragraph{Creation dates} The start and end dates of when the data was created (YYYY-MM-DD).
-\paragraph{Dataset creators} Please list anyone who helped to create the dataset (who may or may not be an author of the data paper), including their roles (using and affiliations).
-\paragraph{Language} Languages used in the dataset (i.e., for variable names etc.).
-\paragraph{License} The open license under which the data has been deposited (e.g., CC0). 
-\paragraph{Publication date} If already known, the date in which the dataset was published in the repository (YYYY-MM-DD).
+\subsubsection{The $h(n)$ function}
 
-\section{Reuse Potential}
-Please describe the ways in which your data could be reused by other researchers both within and outside of your field. For example, this might include aggregation, further analysis, reference, validation, teaching or collaboration. This section should also include limitations to, or potential barriers for reuse.
+This fuction is calculated taking into account two possible parameters:
 
-\section*{Acknowledgements}
-Please add any relevant acknowledgements to anyone else that assisted with the project in which the data was created but did not work directly on the data itself.
+\begin{itemize}
+    \item The distance from the current node $N$ to the destination $D$.
+    \item The security status of the current system.
+\end{itemize}
 
-\section*{Funding Statement}
-If the data resulted from funded research please list the funder and grant number here.
+The system status plays an important role: depending on the value, a penalty factor may be applied in order to increase the cost $C_N$. For arbitrary reasons, the penalty in considered as $P = 10000$. 
 
-\section*{Competing interests} 
-If any of the authors have any competing interests then these must be declared. If there are no competing interests to declare then the following statement should be present: The author(s) has/have no competing interests to declare.
+The shortest path $r$ from current node $N$ to the destination $D$ is also considered - and calculated - using Dijkstra algorithm.
+
+Therefore:
+
+\[
+h(n) =
+\begin{cases}
+(1 - \text{sec\_status) } + \text{r} , & \text{if  sec\_status} \geq 0.5 \\
+|(1 - \text{sec\_status }) + (\text{r} \cdot \text{P})|, & \text{otherwise}
+\end{cases}
+\]
 
 \bibliographystyle{johd}
 \bibliography{bib}
