@@ -173,10 +173,16 @@ public:
     
         // Reconstruct the path from origin to destination
         
-        /*System *prev = destination;
-        d_printSolution(minimum_path, prev, previous);*/
+        System *prev = destination;
+        /*d_printSolution(prev, previous);*/
+
+        vector<System*> minimum_path;
+        while (prev != nullptr) {
+            minimum_path.push_back(prev);
+            prev = previous[prev];
+        }
     
-        return 1;
+        return minimum_path.size();
     }
 
     /**
