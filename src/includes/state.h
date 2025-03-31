@@ -49,7 +49,7 @@ class State{
                 // Apply a penalty for systems with low security
                 double heuristic_result;
                 if (sys_status >= 0.5){
-                    heuristic_result = (1 - sys_status);
+                    heuristic_result = (1 - sys_status) + r;
                 } else {
                     double penalty_factor = 10000;  // Strong penalty for low security
                     heuristic_result = fabs(((1 - sys_status) + ((double)r * penalty_factor))); // Dijkstra may return -1 if no path found
