@@ -28,6 +28,7 @@ inline State* a_star(Graph& g, State* origin, State* destination) {
 
     origin->heuristic_value = 0; // starting point heuristic (f(x) = g(x) + h(x))
     g_values[origin->currentSystem] = 0;  // g(x) of the origin system is 0
+    origin->prev = nullptr; // this could be done in the main function
     open_list.push_back(origin);
 
     while (!open_list.empty()) {

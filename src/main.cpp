@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
         deque<State*>path;
         while (a_state){
             path.push_front(a_state);
+            if (a_state == nullptr) continue;
             a_state = a_state->prev;
         }
         
