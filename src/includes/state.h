@@ -42,7 +42,7 @@ class State{
             for (const auto& [name, system] : node->currentSystem->get_adjacent_systems()){
                 adjacents.push_back(system);
             }
-            for (int i = 0; i < adjacents.size(); i++) {
+            for (long unsigned int i = 0; i < adjacents.size(); i++) {
                 double sys_status = adjacents[i]->get_security(); // h1(n) = status
                 int r = g.dijkstra(adjacents[i], destination); // h2(n) = dijkstra
             

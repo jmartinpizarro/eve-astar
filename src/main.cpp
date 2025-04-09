@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unordered_map>
 #include <stdexcept>
+#include <deque>
 
 #include "includes/system.h"
 #include "includes/state.h"
