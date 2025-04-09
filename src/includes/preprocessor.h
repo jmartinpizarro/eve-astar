@@ -22,7 +22,7 @@ using namespace std;
  * @param counter depending on the value, it process one part of the line or another
  * @return 0 if everythong went correctly
  */
-int process_line(Graph* g, string* content, int* counter) {
+inline int process_line(Graph* g, string* content, int* counter) {
     string word1, word2, word3;
     stringstream s(*content);
     string prev;
@@ -63,7 +63,7 @@ int process_line(Graph* g, string* content, int* counter) {
  * @param destination destination variable
  * @return a Graph with all the system nodes and connections
  */
-Graph read_file(string fileRoute, string* origin, string* destination){
+inline Graph read_file(string fileRoute, string* origin, string* destination){
 
     Graph g;
 

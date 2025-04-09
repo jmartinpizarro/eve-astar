@@ -15,7 +15,7 @@
  * @param origin, destination: states nodes
  * @return State*. The final node, solution has been found
  */
-State* a_star(Graph g, State* origin, State* destination) {
+inline State* a_star(Graph g, State* origin, State* destination) {
     // Vector to store open list, with custom sorting
     std::vector<State*> open_list;
     std::unordered_map<System*, double> g_values;  // stores g(x) for each system

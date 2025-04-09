@@ -1,6 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
 
+#include <cmath>
+
 #include "system.h"
 #include "graph.h"
 
