@@ -15,7 +15,7 @@
  * @param origin, destination: states nodes
  * @return State*. The final node, solution has been found
  */
-inline State* a_star(Graph g, State* origin, State* destination) {
+inline State* a_star(Graph& g, State* origin, State* destination) {
     // Vector to store open list, with custom sorting
     std::vector<State*> open_list;
     std::unordered_map<System*, double> g_values;  // stores g(x) for each system
@@ -66,6 +66,8 @@ inline State* a_star(Graph g, State* origin, State* destination) {
                 g_values[new_state->currentSystem] = g_cost;
                 new_state->heuristic_value = g_cost + new_state->heuristic_value; // update f(x)
                 
+                new_state->prev = s_system;
+
                 // Check if already in open list to avoid duplicates
                 auto it = std::find_if(open_list.begin(), open_list.end(), 
                     [&new_state](State* state) { 
