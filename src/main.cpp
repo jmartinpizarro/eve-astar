@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
         // homemade solution to the problem of expansion order 
         // (destionation&origin) || (origin&destination) may have different orders, it is
         // choosen the best
-        a_state = a_star(g, origin_S, destination_S);
+        a_state = a_star(g, destination_S, origin_S);
 
         // in theory here we know that here there will be always a solution!
         if (!a_state){ 
@@ -77,7 +77,9 @@ int main(int argc, char* argv[]) {
         }
 
         // if the path2 is smaller and has less <= 0.4 systems, replace it as the new path
-        if (path2.size() <= path.size() && unsec2 <= unsec1) path = path2;                
+        if (path2.size() <= path.size() && unsec2 <= unsec1) {
+            path = path2;
+        }              
         
         cout << "\tPath: ";
         for (size_t i = 0; i < path.size(); ++i) {
