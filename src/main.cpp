@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         get_origin_destination_systems(&g, origin_S, destination_S);
         
         State* a_state = a_star(g, origin_S, destination_S);
-
+        int unsec1, unsec2;
         if (!a_state){
             cout << " A*: no possible solution found" << endl;
             return -1;
@@ -48,9 +48,36 @@ int main(int argc, char* argv[]) {
         deque<State*>path;
         while (a_state){
             path.push_front(a_state);
+            if (a_state->currentSystem->get_security() <= 0.4){
+                unsec1++;
+            }
             if (a_state == nullptr) continue;
             a_state = a_state->prev;
         }
+
+        // homemade solution to the problem of expansion order 
+        // (destionation&origin) || (origin&destination) may have different orders, it is
+        // choosen the best
+        a_state = a_star(g, origin_S, destination_S);
+
+        // in theory here we know that here there will be always a solution!
+        if (!a_state){ 
+            cout << " A*: no possible solution found" << endl;
+            return -1;
+        }
+
+        deque<State*>path2;
+        while (a_state){
+            path2.push_front(a_state);
+            if (a_state->currentSystem->get_security() <= 0.4){
+                unsec2++;
+            }
+            if (a_state == nullptr) continue;
+            a_state = a_state->prev;
+        }
+
+        // if the path2 is smaller and has less <= 0.4 systems, replace it as the new path
+        if (path2.size() <= path.size() && unsec2 <= unsec1) path = path2;                
         
         cout << "\tPath: ";
         for (size_t i = 0; i < path.size(); ++i) {
