@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
@@ -55,6 +56,7 @@ int main(int argc, char* argv[]) {
             a_state = a_state->prev;
         }
 
+        cout << "=== A* second iteration has started" << endl;
         // homemade solution to the problem of expansion order 
         // (destionation&origin) || (origin&destination) may have different orders, it is
         // choosen the best
@@ -78,6 +80,7 @@ int main(int argc, char* argv[]) {
 
         // if the path2 is smaller and has less <= 0.4 systems, replace it as the new path
         if (path2.size() <= path.size() && unsec2 <= unsec1) {
+            reverse(path2.begin(), path2.end());
             path = path2;
         }              
         
