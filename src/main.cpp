@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
         get_origin_destination_systems(&g, origin_S, destination_S);
         
         State* a_state = a_star(g, origin_S, destination_S);
-        int unsec1, unsec2;
+        int unsec1 = 0, unsec2 = 0;
         if (!a_state){
             cout << " A*: no possible solution found" << endl;
             return -1;
